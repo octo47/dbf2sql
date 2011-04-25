@@ -1,0 +1,10 @@
+<config name="test1">
+    <jdbcParams>
+        <driver>${test.db.jdbcDriver}</driver>
+        <url>${test.db.jdbcUrl}${test.db.jdbcUrl.params}</url>
+        <user>${test.db.jdbcUser}</user>
+        <password>${test.db.jdbcPassword}</password>
+        <schema>public</schema>
+    </jdbcParams>
+    <file path="../tmp/test1.dbf" encoding="cp866" replace="true"/>
+</config>

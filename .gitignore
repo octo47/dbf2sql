@@ -1,0 +1,8 @@
+*.iml
+*.ipr
+*.iws
+coverage.ec
+target/
+catalog/out
+scripts/deploy/server
+schema/src/sql/testdata/test/

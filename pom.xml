@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>dbf2sql</groupId>
+    <artifactId>dbf2sql</artifactId>
+    <packaging>jar</packaging>
+    <name>dbf2sql</name>
+    <version>1.0.9-SNAPSHOT</version>
+
+    <properties>
+        <jdbcDriver.groupId>postgresql</jdbcDriver.groupId>
+        <jdbcDriver.artifactId>postgresql</jdbcDriver.artifactId>
+        <jdbcDriver.version>8.3-603.jdbc4</jdbcDriver.version>
+        <test.db.dialect>postgresql</test.db.dialect>
+        <test.db.jdbcDriver>org.postgresql.Driver</test.db.jdbcDriver>
+        <test.db.jdbcUser>it</test.db.jdbcUser>
+        <test.db.jdbcPassword>secureitpassword</test.db.jdbcPassword>
+        <test.db.jdbcUrl>jdbc:postgresql://localhost/it</test.db.jdbcUrl>
+        <test.db.jdbcUrl.params><![CDATA[?charSet=utf8]]></test.db.jdbcUrl.params>
+        <test.db.delimeterType>row</test.db.delimeterType>
+        <test.db.delimeter>--/</test.db.delimeter>
+
+        <spring.version>2.5.6</spring.version>
+    </properties>
+
+    <prerequisites>
+        <maven>2.0.9</maven>
+    </prerequisites>
+
+    <scm>
+        <connection>scm:git:git://github.com/octo47/dbf2sql.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:octo47/dbf2sql.git</developerConnection>
+    </scm>
+
+    <build>
+        <defaultGoal>install</defaultGoal>
+        <testResources>
+            <testResource>
+                <directory>src/test/filtered</directory>
+                <filtering>true</filtering>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>false</filtering>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <encoding>utf8</encoding>
+                    <verbose>true</verbose>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!--<testFailureIgnore>true</testFailureIgnore>-->
+                    <!--<childDelegation>true</childDelegation>-->
+                    <forkMode>pertest</forkMode>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/*Abstract*.java</exclude>
+                        <exclude>**/*ITest.java</exclude>
+                    </excludes>
+                    <useFile>true</useFile>
+                    <argLine>-Xmx512M</argLine>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+                <dependencies>
+                         <dependency>
+                               <groupId>org.apache.maven.scm</groupId>
+                               <artifactId>maven-scm-provider-gitexe</artifactId>
+                              <version>1.3</version>
+                         </dependency>
+                         <dependency>
+                               <groupId>org.apache.maven.scm</groupId>
+                               <artifactId>maven-scm-api</artifactId>
+                              <version>1.2</version>
+                         </dependency>
+                </dependencies>
+
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>assemble</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attached</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/assembly/dbf2sql.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav</artifactId>
+                <version>1.0-beta-2</version>
+            </extension>
+        </extensions>
+    </build>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>commons-cli</groupId>
+            <artifactId>commons-cli</artifactId>
+            <version>1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.12</version>
+            <scope>compile</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>8.3-603.jdbc4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.simpleframework</groupId>
+            <artifactId>simple-xml</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.4</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <scope>test</scope>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <scope>test</scope>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+            <version>${spring.version}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>
